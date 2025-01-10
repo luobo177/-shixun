@@ -3,6 +3,7 @@ import log from '@/views/log.vue'; // 登录页面
 import AdminHome from '@/views/AdminHome.vue'; // 管理员页面
 import StudentHome from '@/views/StudentHome.vue'; // 学生页面
 
+
 const routes = [
     {
         path: '/', // 初始路径
