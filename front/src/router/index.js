@@ -3,13 +3,9 @@ import log from '@/views/log.vue'; // 登录页面
 import AdminOverview from '@/views/AdminOverview.vue'; // 管理员页面
 import AdminManagement from '@/views/AdminManagement.vue';
 import AdminNotification from '@/views/AdminNotification.vue';
-import LogManagement from '@/views/AdminLog.vue';
 import StudentHome from '@/views/StudentHome.vue'; // 学生页面
-<<<<<<< HEAD
 import AdminLog from '@/views/AdminLog.vue';
-=======
 import ChangeMessage from '@/views/changemessage.vue'; // 信息修改页面
->>>>>>> e55dcdc20f9f870c0e166134de5fb5972f915210
 
 const routes = [
     {
@@ -37,10 +33,10 @@ const routes = [
                 component: AdminNotification,
             },
             {
-                path:'Log-management',
-                name:LogManagement,
-                component:AdminLog,
-            }
+                path: 'log-management',
+                name: 'LogManagement',
+                component: AdminLog, // 使用 AdminLog
+            },
         ]
     },
     {
