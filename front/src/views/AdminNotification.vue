@@ -2,6 +2,11 @@
     <div v-if="isLoading">正在加载通知，请稍后...</div>
     <div v-else>
         <h1>通知管理</h1>
+        <button @click="AddButtonVisible">新建通知</button>
+        <div v-if="isAddVisible">
+            <AddNotification :isVisible="isAddVisible"
+                @update:isVisible="isAddVisible = $event" />
+        </div>
         <div v-if="notification_list.length === 0" class="no-notification">
             暂无通知
         </div>
@@ -21,9 +26,13 @@
 <script>
 import axios from 'axios';
 import NotificationModel from '@/components/NotificationModel.vue';
-
+import AddNotification from '@/components/AddNotification.vue';
 export default {
     name: 'AdminNotification',
+    components: {
+        NotificationModel,
+        AddNotification,
+    },
     data() {
         return {
             notification_list: [
@@ -59,16 +68,20 @@ export default {
                 },
             ]
             ,// 初始化为空数组
-            isModelVisible: false,
+            isModelVisible: false,//关联详细信息的显示
+            isAddVisible: false,//关联新建通知的显示
             selectedNotification: null,
             isLoading: true, // 加载状态
             hoveredIndex: null, // 当前悬停的通知索引
         };
     },
-    components: {
-        NotificationModel,
-    },
     methods: {
+        AddButtonVisible() {
+            this.isAddVisible = true;
+        },
+        closeAddButton() {
+            this.isAddVisible = false;
+        },
         showDetails(notification) {
             this.selectedNotification = notification;
             this.isModelVisible = true;
