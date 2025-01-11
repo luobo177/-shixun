@@ -22,6 +22,9 @@
             <el-menu-item index="notification-management">
               <i class="el-icon-bell"></i> 通知管理
             </el-menu-item>
+            <el-menu-item index="Log-management">
+              <i class="el-icon-bell"></i> 日志
+            </el-menu-item>
           </el-menu>
         </el-aside>
   

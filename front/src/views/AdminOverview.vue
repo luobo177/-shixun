@@ -1,5 +1,5 @@
 <template>
-  <div>1</div>
+  <div>总览</div>
 </template>
 
 <script>
