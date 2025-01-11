@@ -57,7 +57,7 @@
     methods: {
       async addNotification() {
         try {
-          const response = await axios.post('/api/addNotification', this.notification);
+          const response = await axios.post('/api/admin/addNotification', this.notification);
           if (response.data.success) {
             this.isSuccess = true;
             this.isError = false;
