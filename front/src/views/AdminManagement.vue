@@ -2,7 +2,7 @@
   <div class="student-management">
     <!-- 搜索功能 -->
     <div class="search-container">
-      <input type="text" v-model="searchText" placeholder="请输入要查询的学生学号或姓名" class="search-input" />
+      <input type="text" v-model="searchText" placeholder="请输入要查询的学生学号" class="search-input" />
       <button @click="searchStudent" class="search-button">搜索</button>
     </div>
 
@@ -13,7 +13,7 @@
           <th>学号</th>
           <th>姓名</th>
           <th>年龄</th>
-          <th>班级</th>
+          <th>专业</th>
           <th>性别</th>
           <th>操作</th>
         </tr>
@@ -23,7 +23,7 @@
           <td>{{ student.id }}</td>
           <td>{{ student.name }}</td>
           <td>{{ student.age }}</td>
-          <td>{{ student.class }}</td>
+          <td>{{ student.major }}</td>
           <td>{{ student.gender }}</td>
           <td>
             <button @click="viewDetail(student)" class="detail-button">详情</button>
@@ -47,17 +47,19 @@ export default {
     return {
       searchText: "", // 搜索关键字
       OriginList: [
-        { id: 1001, name: "张三", age: 18, class: "高一(1)班", gender: "男" },
-        { id: 1002, name: "李四", age: 17, class: "高一(2)班", gender: "女" },
-        { id: 1003, name: "王五", age: 18, class: "高一(3)班", gender: "男" },
-        { id: 1004, name: "赵六", age: 17, class: "高一(4)班", gender: "女" },
-        { id: 1005, name: "孙七", age: 19, class: "高一(5)班", gender: "男" },
-        { id: 1006, name: "周八", age: 18, class: "高一(6)班", gender: "男" },
-        { id: 1007, name: "吴九", age: 16, class: "高一(7)班", gender: "女" },
-        { id: 1008, name: "郑十", age: 17, class: "高一(8)班", gender: "男" },
-        { id: 1009, name: "陈十一", age: 18, class: "高一(9)班", gender: "女" },
-        { id: 1010, name: "朱十二", age: 17, class: "高一(10)班", gender: "男" },
+        { id: 1001, name: "张三", age: 18, major: "计算机科学", gender: "男", phoneNumber: "18888888888", registrationStatus: "已报道" },
+        { id: 1002, name: "李四", age: 17, major: "信息工程", gender: "女", phoneNumber: "16666666666", registrationStatus: "未报道" },
+        { id: 1003, name: "王五", age: 18, major: "电子科学", gender: "男", phoneNumber: "17777777777", registrationStatus: "已报道" },
+        { id: 1004, name: "赵六", age: 17, major: "软件工程", gender: "女", phoneNumber: "19999999999", registrationStatus: "未报道" },
+        { id: 1005, name: "孙七", age: 19, major: "数学与应用数学", gender: "男", phoneNumber: "15555555555", registrationStatus: "已报道" },
+        { id: 1006, name: "周八", age: 18, major: "物联网工程", gender: "男", phoneNumber: "13333333333", registrationStatus: "未报道" },
+        { id: 1007, name: "吴九", age: 16, major: "人工智能", gender: "女", phoneNumber: "14444444444", registrationStatus: "已报道" },
+        { id: 1008, name: "郑十", age: 17, major: "通信工程", gender: "男", phoneNumber: "12222222222", registrationStatus: "已报道" },
+        { id: 1009, name: "陈十一", age: 18, major: "数据科学与大数据技术", gender: "女", phoneNumber: "11111111111", registrationStatus: "未报道" },
+        { id: 1010, name: "朱十二", age: 17, major: "网络工程", gender: "男", phoneNumber: "19988887777", registrationStatus: "已报道" },
       ],
+
+
       // 学生数据从后端获取
       filterList: [], // 筛选后的学生数据
       showDetail: false, // 是否显示详情弹窗

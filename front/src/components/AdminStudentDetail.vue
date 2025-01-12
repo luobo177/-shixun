@@ -8,22 +8,27 @@
       </label>
       <label>
         姓名：
-        <input v-model="editStudentData.name" />
+        <input v-model="editStudentData.name" disabled />
       </label>
       <label>
-        年龄：
-        <input v-model="editStudentData.age" type="number" />
-      </label>
-      <label>
-        班级：
-        <input v-model="editStudentData.class" />
+        电话：
+        <input v-model="editStudentData.phoneNumber" />
       </label>
       <label>
         性别：
-        <select v-model="editStudentData.gender">
-          <option value="男">男</option>
-          <option value="女">女</option>
-        </select>
+        <input v-model="editStudentData.gender" disabled />
+      </label>
+      <label>
+        专业：
+        <input v-model="editStudentData.major" disabled />
+      </label>
+      <label>
+        报到状态：
+        <input v-model="editStudentData.registrationStatus" disabled />
+      </label>
+      <label>
+        年龄：
+        <input v-model="editStudentData.age" disabled />
       </label>
     </div>
 
@@ -54,7 +59,6 @@ export default {
     // 保存修改
     async saveEdit() {
       try {
-        // 模拟同步到后端
         const response = await axios.post("/api/admin/updateStudent", {
           student: this.editStudentData,
         });
@@ -105,20 +109,20 @@ h3 {
 }
 
 .form-container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 15px;
 }
 
 label {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 14px;
   color: #333;
 }
 
-input,
-select {
+input {
   flex: 1;
   padding: 8px;
   font-size: 14px;
