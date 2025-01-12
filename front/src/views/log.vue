@@ -39,7 +39,7 @@
                     return;
                 }
                 try {
-                    const response = await axios.post('/api/login', {
+                    const response = await axios.post('/api/admin/login', {
                         account: this.account,
                         password: this.password,
                         type: role,
