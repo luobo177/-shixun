@@ -53,6 +53,8 @@ export default {
         console.log("请求数据成功");
         this.totalStudent=response.data.totalStudent;
         this.boyCount=response.data.boyCount;
+        this.girlCount=response.data.girlCount;
+        this.reportedStudent=response.data.reportedStudent;
       }
       }catch(error){
         console.error("请求数据错误",error);
