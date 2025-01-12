@@ -6,6 +6,7 @@ import AdminNotification from '@/views/AdminNotification.vue';
 import StudentHome from '@/views/StudentHome.vue'; // 学生页面
 import AdminLog from '@/views/AdminLog.vue';
 import StudentMessageChange from '@/views/StudentMessageChange.vue'; // 信息修改页面
+import StudentNotice from '@/views/StudentNotice.vue';
 
 const routes = [
     {
@@ -52,6 +53,11 @@ const routes = [
                 path: 'student-change', // 信息修改页面
                 name: 'ChangeMessage',
                 component: StudentMessageChange,
+            },
+            {
+                path: 'student-notice', // 学生通知页面
+                name: 'StudentNotice',
+                component: StudentNotice,
             },
         ]
     }
