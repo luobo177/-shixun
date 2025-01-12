@@ -21,7 +21,7 @@
 
 <script>
 import axios from 'axios';
-import NotificationModel from '@/components/NotificationModel.vue';
+import NotificationModel from '@/components/StudentNotification.vue';
 
 export default {
     name: 'StudentNotice',
@@ -77,21 +77,6 @@ export default {
             this.selectedNotification = null;
             this.isModelVisible = false;
         },
-        async deleteNotification(notification) {
-            try {
-                this.isLoading = true;
-                const response = await axios.delete(`/api/deleteNotification?id=${notification.id}`);
-                console.log("删除成功", response.data);
-                this.notification_list = this.notification_list.filter(
-                    n => n.id !== notification.id
-                );
-            } catch (error) {
-                console.error("删除失败", error);
-            } finally {
-                this.isLoading = false;
-                this.closeModal();
-            }
-        },
         async get_notification() {
             this.isLoading = true; // 开始加载
             try {
@@ -101,16 +86,6 @@ export default {
                 console.error("获取通知失败：", error);
             } finally {
                 this.isLoading = false; // 加载完成
-            }
-        },
-        async editNotification(notification) {
-            try {
-                const response = await axios.post(`/api/editNotification`, notification);
-                console.log("编辑成功", response.data);
-                this.isModelVisible = false;
-                this.get_notification(); // 编辑后重新获取数据
-            } catch (error) {
-                console.error("编辑失败", error);
             }
         },
         hoverNotification(index) {
