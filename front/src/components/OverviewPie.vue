@@ -1,6 +1,5 @@
 <template>
-    <div>
-      <h1>报告统计</h1>
+    <div class="chart-container">
       <canvas ref="myPieChart"></canvas>
     </div>
   </template>
@@ -23,47 +22,21 @@
         required: true,
       },
     },
-    mounted() {
-      this.drawChart();
-    },
-    methods: {
-      drawChart() {
-        const ctx = this.$refs.myPieChart.getContext('2d');
-        new Chart(ctx, {
-          type: 'pie',
-          data: {
-            labels: ['已报告', '未报告'],
-            datasets: [
-              {
-                data: [this.reported, this.total - this.reported],
-                backgroundColor: ['#4caf50', '#f44336'],
-                hoverBackgroundColor: ['#45a049', '#e53935'],
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: {
-                position: 'top',
-              },
-              tooltip: {
-                callbacks: {
-                  label: (tooltipItem) => {
-                    const percentage = ((tooltipItem.raw / this.total) * 100).toFixed(2);
-                    return `${tooltipItem.label}: ${percentage}%`;
-                  },
-                },
-              },
-            },
-          },
-        });
-      },
-    },
   };
   </script>
   
   <style scoped>
-  /* 你的样式代码 */
+  .chart-container {
+    width: 400px; /* 限制图表的宽度 */
+    height: 400px; /* 限制图表的高度 */
+    margin: 0 auto; /* 居中对齐 */
+    position: relative; /* 保证子元素绝对定位时相对父元素 */
+  }
+  
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
   </style>
   
