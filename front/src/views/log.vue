@@ -51,7 +51,7 @@
                         localStorage.setItem('token', data.token);
                         localStorage.setItem('role',role)
                         if (role == 'admin') {
-                            this.$router.push('/admin/home')
+                            this.$router.push('/admin/Overview')
                         }
                         else {
                             this.$router.push('/student/home')

@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { ElUpload, ElButton, ElSelect, ElOption, ElDatePicker, ElInput, ElForm, ElFormItem } from 'element-plus';
 
 export default {
@@ -89,28 +90,48 @@ export default {
     return {
       student: {
         photo: 'https://via.placeholder.com/150', // 默认照片
-        name: '张三',
-        gender: '男',
-        birthDate: '2000-01-01',
-        phoneNumber: '1234567890',
-        studentId: '20220101',
-        dormInfo: '住校', // 或 "走读"
-        registrationStatus: '已注册', // 或 "未注册"
+        name: '',
+        gender: '',
+        birthDate: '',
+        phoneNumber: '',
+        studentId: '',
+        dormInfo: '',
+        registrationStatus: '',
       }
     };
   },
-  methods: {
-  // 模拟处理照片上传
-  handlePhotoUpload(response, file) {
-    // 这里可以根据后端返回的 URL 更新学生照片
-    this.student.photo = file.url || 'https://via.placeholder.com/150'; // 使用上传返回的 URL
+  mounted() {
+    this.getStudentData(); // 页面加载时获取学生数据
   },
-  // 提交表单
-  submitForm() {
-    console.log('提交的学生信息：', this.student);
-    // 在这里可以将数据发送到后端 API
+  methods: {
+    // 获取学生数据
+    async getStudentData() {
+      try {
+        const studentId = 1; // 假设我们要获取学生ID为 1 的数据
+        const response = await axios.get(`http://your-api-endpoint.com/student/${studentId}`);
+        this.student = response.data; // 将数据绑定到表单模型
+      } catch (error) {
+        console.error('获取学生数据失败:', error);
+      }
+    },
+
+    // 模拟处理照片上传
+    handlePhotoUpload(response, file) {
+      // 这里可以根据后端返回的 URL 更新学生照片
+      this.student.photo = file.url || 'https://via.placeholder.com/150'; // 使用上传返回的 URL
+    },
+
+    // 提交表单
+    async submitForm() {
+      try {
+        const studentId = this.student.studentId; // 获取当前学生ID
+        const response = await axios.put(`http://your-api-endpoint.com/student/${studentId}`, this.student); // 更新学生信息
+        console.log('学生信息更新成功:', response.data);
+      } catch (error) {
+        console.error('提交失败:', error);
+      }
+    }
   }
-}
 };
 </script>
 

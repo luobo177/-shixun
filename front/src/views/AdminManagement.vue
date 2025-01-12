@@ -6,7 +6,11 @@
       <button @click="searchStudent" class="search-button">搜索</button>
     </div>
 
+<<<<<<< HEAD
     <!-- 学生列表展示 未完成 -->
+=======
+    <!-- 学生列表展示 -->
+>>>>>>> f485cf5d2cd66d68c4dffb75f7962bcca19c5a62
     <table class="student-table">
       <thead>
         <tr>
@@ -217,4 +221,8 @@ export default {
 .detail-button:hover {
   background-color: #218838;
 }
+<<<<<<< HEAD
 </style>
+=======
+</style>
+>>>>>>> f485cf5d2cd66d68c4dffb75f7962bcca19c5a62

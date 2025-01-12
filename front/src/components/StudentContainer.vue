@@ -19,6 +19,12 @@
             <el-menu-item index="student-change">
               <i class="el-icon-user"></i> 信息修改
             </el-menu-item>
+            <el-menu-item index="student-notice">
+              <i class="el-icon-user"></i> 学生通知
+            </el-menu-item>
+            <el-menu-item index="student-registe">
+              <i class="el-icon-user"></i> 注册确认
+            </el-menu-item>
           </el-menu>
         </el-aside>
   
