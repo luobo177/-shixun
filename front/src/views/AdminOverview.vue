@@ -30,20 +30,35 @@
 
 <script>
 import OverviewPie from '@/components/OverviewPie.vue';
+import axios from 'axios';
 
 export default {
   data() {
     return {
-      totalStudent: 0,
-      boyCount: 0,
-      girlCount: 0,
-      reportedStudent: 0,
+      totalStudent: '',
+      boyCount: '',
+      girlCount: '',
+      reportedStudent: '',
     };
   },
   name: 'AdminOverview',
   components: {
     OverviewPie,
   },
+  methods:{
+    async getData(){
+      try{
+      const response=await axios.get('/api/admin/getTotalData');
+      if (response.data.success){
+        console.log("请求数据成功");
+        this.totalStudent=response.data.totalStudent;
+        this.boyCount=response.data.boyCount;
+      }
+      }catch(error){
+        console.error("请求数据错误",error);
+      }
+    }
+  }
 };
 </script>
 
