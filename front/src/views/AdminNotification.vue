@@ -109,9 +109,14 @@ export default {
             this.isLoading = true; // 开始加载
             try {
                 const response = await axios.get('/api/admin/notification');
-                this.notification_list = response.data.notifications || [];
+                if(response.data.suceess){
+                    console.log("获取通知成功", response.data);
+                    this.notification_list = response.data.notifications || [];
+                }else{
+                    console.log("获取通知失败：", response.data.message);
+                }
             } catch (error) {
-                console.error("获取通知失败：", error);
+                console.error("连接后端失败：", error);
             } finally {
                 this.isLoading = false; // 加载完成
             }

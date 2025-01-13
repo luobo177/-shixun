@@ -6,7 +6,6 @@
       <button @click="searchStudent" class="search-button">搜索</button>
     </div>
 
-
     <table class="student-table">
       <thead>
         <tr>
