@@ -4,8 +4,8 @@
         <h1>通知管理</h1>
         <button @click="AddButtonVisible">新建通知</button>
         <div v-if="isAddVisible">
-            <AddNotification :isVisible="isAddVisible"
-                @update:isVisible="isAddVisible = $event" />
+            <AddNotification :isVisible="isAddVisible" @update:isVisible="isAddVisible = $event" @add="addNotification" />
+
         </div>
         <div v-if="notification_list.length === 0" class="no-notification">
             暂无通知
@@ -35,39 +35,7 @@ export default {
     },
     data() {
         return {
-            notification_list: [
-                {
-                    id: 1,
-                    title: "系统更新通知",
-                    content: "系统将于今晚23:00-01:00进行维护，请提前保存好数据。",
-                    timestamp: "2025-01-11 10:00:00",
-                },
-                {
-                    id: 2,
-                    title: "账户安全提醒",
-                    content: "检测到您的账户在异地登录，请确认是否为本人操作。",
-                    timestamp: "2025-01-10 16:45:00",
-                },
-                {
-                    id: 3,
-                    title: "节日福利活动",
-                    content: "春节即将到来，登录平台领取您的专属新年礼物！",
-                    timestamp: "2025-01-09 09:30:00",
-                },
-                {
-                    id: 4,
-                    title: "产品更新发布",
-                    content: "我们推出了新功能，快来体验全新的工作流程吧！",
-                    timestamp: "2025-01-08 14:20:00",
-                },
-                {
-                    id: 5,
-                    title: "新用户指南",
-                    content: "欢迎使用本平台！点击查看新手引导，快速上手操作。",
-                    timestamp: "2025-01-07 11:15:00",
-                },
-            ]
-            ,// 初始化为空数组
+            notification_list: [],// 初始化为空数组
             isModelVisible: false,//关联详细信息的显示
             isAddVisible: false,//关联新建通知的显示
             selectedNotification: null,
@@ -93,7 +61,7 @@ export default {
         async deleteNotification(notification) {
             try {
                 this.isLoading = true;
-                const response = await axios.delete(`/api/deleteNotification?id=${notification.id}`);
+                const response = await axios.delete(`/api/admin/deleteNotification?id=${notification.id}`);
                 console.log("删除成功", response.data);
                 this.notification_list = this.notification_list.filter(
                     n => n.id !== notification.id
@@ -109,7 +77,7 @@ export default {
             this.isLoading = true; // 开始加载
             try {
                 const response = await axios.get('/api/admin/notification');
-                if(response.data.suceess){
+                if(response.data.success){
                     console.log("获取通知成功", response.data);
                     this.notification_list = response.data.notifications || [];
                 }else{
@@ -123,7 +91,7 @@ export default {
         },
         async editNotification(notification) {
             try {
-                const response = await axios.post(`/api/editNotification`, notification);
+                const response = await axios.post(`/api/admin/editNotification`, notification);
                 console.log("编辑成功", response.data);
                 this.isModelVisible = false;
                 this.get_notification(); // 编辑后重新获取数据
