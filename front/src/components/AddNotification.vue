@@ -62,12 +62,17 @@
             this.isSuccess = true;
             this.isError = false;
             this.resetForm();
+          }else{
+            this.isError = true;
+            this.isSuccess = false;
+            console.error('添加通知失败', response.data.message);
           }
         } catch (error) {
           this.isError = true;
           this.isSuccess = false;
           console.error('添加通知失败', error);
         }
+        this.$emit('update:isVisible', false); // 触发父组件的事件，关闭弹框 
       },
       resetForm() {
         this.notification.title = '';
