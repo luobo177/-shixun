@@ -30,13 +30,13 @@ export default {
     return {
       student: {
         photo: "", // 初始为空，稍后从数据库模拟填充
-        name: "",
-        gender: "",
-        birthDate: "",
-        phoneNumber: "",
-        studentId: "",
-        dormInfo: "",
-        registrationStatus: "",
+        name: "许建航",
+        gender: "男",
+        birthDate: "2024—06",
+        phoneNumber: "18782896937",
+        studentId: "2022131032",
+        dormInfo: "12",
+        registrationStatus: "1",
       },
       tableData: [] // 用于存储表格数据
     };
@@ -53,7 +53,7 @@ export default {
 
         // 格式化数据填充到 tableData
         this.tableData = [
-          { label: "姓名", value: "zhangsan" },
+          { label: "姓名", value: this.student.name },
           { label: "性别", value: this.student.gender },
           { label: "出生日期", value: this.student.birthDate },
           { label: "电话号码", value: this.student.phoneNumber },
