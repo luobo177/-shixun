@@ -46,10 +46,11 @@
                     })
 
                     const data = response.data;
-
+                    const id = "some-unique-id"
                     if (data.success) {
                         localStorage.setItem('token', data.token);
-                        localStorage.setItem('role',role)
+                        localStorage.setItem('role',role);
+                        localStorage.setItem('id',id);
                         if (role == 'admin') {
                             this.$router.push('/admin/Overview')
                         }

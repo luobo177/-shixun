@@ -36,6 +36,11 @@
         <el-date-picker v-model="student.birthDate" type="date" placeholder="选择出生日期"></el-date-picker>
       </el-form-item>
 
+      <!-- 入学年份 -->
+      <el-form-item label="入学年份">
+        <el-input v-model="student.enrollmentYear"></el-input>
+      </el-form-item>
+
       <!-- 电话号码 -->
       <el-form-item label="电话号码">
         <el-input v-model="student.phoneNumber"></el-input>
@@ -44,6 +49,16 @@
       <!-- 学号 -->
       <el-form-item label="学号">
         <el-input v-model="student.studentId"></el-input>
+      </el-form-item>
+
+      <!-- 专业 -->
+      <el-form-item label="专业">
+        <el-input v-model="student.major"></el-input>
+      </el-form-item>
+
+      <!-- 密码 -->
+      <el-form-item label="密码">
+        <el-input type="password" v-model="student.password"></el-input>
       </el-form-item>
 
       <!-- 住校信息 -->
@@ -60,6 +75,11 @@
           <el-option label="已注册" value="已注册"></el-option>
           <el-option label="未注册" value="未注册"></el-option>
         </el-select>
+      </el-form-item>
+
+      <!-- 身份证 -->
+      <el-form-item label="身份证">
+        <el-input v-model="student.idCard"></el-input>
       </el-form-item>
 
       <!-- 提交按钮 -->
@@ -93,10 +113,14 @@ export default {
         name: '',
         gender: '',
         birthDate: '',
-        phoneNumber: '',
+        enrollmentYear: '',
         studentId: '',
+        major: '',
+        password: '',
         dormInfo: '',
         registrationStatus: '',
+        phoneNumber: '',
+        idCard: '',
       }
     };
   },
@@ -107,7 +131,7 @@ export default {
     // 获取学生数据
     async getStudentData() {
       try {
-        const studentId = 1; // 假设我们要获取学生ID为 1 的数据
+        const studentId = localStorage.getItem('id');
         const response = await axios.get(`http://your-api-endpoint.com/student/${studentId}`);
         this.student = response.data; // 将数据绑定到表单模型
       } catch (error) {
