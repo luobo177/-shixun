@@ -1,11 +1,11 @@
 <template>
   <div class="admin-overview">
-    <!-- 上层布局 -->
-    <div class="top-section">
-      <!-- 信息总览 -->
-      <div class="info-box">
+    <!-- 上排三块 -->
+    <div class="row">
+      <!-- 信息总览模块 -->
+      <div class="block">
         <h2>信息总览</h2>
-        <ul>
+        <ul class="info-list">
           <li>新生总人数: <strong>{{ totalStudent }}</strong></li>
           <li>男生人数: <strong>{{ boyCount }}</strong></li>
           <li>女生人数: <strong>{{ girlCount }}</strong></li>
@@ -13,106 +13,123 @@
           <li>未报道人数: <strong>{{ totalStudent - reportedStudent }}</strong></li>
         </ul>
       </div>
-      <!-- 预留位置 -->
-      <div class="placeholder-box">
-        <h2>预留区域</h2>
-        <p>可以放置额外信息或功能</p>
+      <!-- 模块 2 -->
+      <div class="block">
+        <h3>按入学年份统计</h3>
+        <OverviewEnrollmentYear :data="enrollmentYearData" />
+      </div>
+      <!-- 模块 3 -->
+      <div class="block">
+        <h3>性别分布</h3>
+        <OverviewGender :boyCount="boyCount" :girlCount="girlCount" />
       </div>
     </div>
 
-    <!-- 下层布局 -->
-    <div class="bottom-section">
-      <h2>图表视图</h2>
-      <OverviewPie />
+    <!-- 下排两块 -->
+    <div class="row">
+      <!-- 模块 4 -->
+      <div class="block">
+        <h3>按专业统计</h3>
+        <OverviewMajor :data="majorList" />
+      </div>
+      <!-- 模块 5 -->
+      <div class="block">
+        <h3>报道情况</h3>
+        <OverViewRegister :totalStudent="totalStudent" :reportedStudent="reportedStudent" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import OverviewPie from '@/components/OverviewPie.vue';
-import axios from 'axios';
+import OverviewEnrollmentYear from "@/components/OverviewEnrollmentYear.vue";
+import OverviewGender from "@/components/OverviewGender.vue";
+import OverviewMajor from "@/components/OverviewMajor.vue";
+import OverViewRegister from "@/components/OverViewRegister.vue";
+import axios from "axios";
 
 export default {
+  name: "AdminOverview",
+  components: {
+    OverviewEnrollmentYear,
+    OverviewGender,
+    OverviewMajor,
+    OverViewRegister,
+  },
   data() {
     return {
-      totalStudent: '',
-      boyCount: '',
-      girlCount: '',
-      reportedStudent: '',
+      totalStudent: 1250, // 新生总人数
+      boyCount: 680, // 男生人数
+      girlCount: 570, // 女生人数
+      reportedStudent: 980, // 报道人数
+      majorList: [
+        { major: "计算机科学", count: 220 },
+        { major: "软件工程", count: 180 },
+        { major: "人工智能", count: 150 },
+        { major: "数据科学", count: 160 },
+        { major: "网络工程", count: 140 },
+        { major: "信息安全", count: 130 }
+      ],
+      enrollmentYearData: [
+        { year: "2019", count: 1100 },
+        { year: "2020", count: 1150 },
+        { year: "2021", count: 1200 },
+        { year: "2022", count: 1180 },
+        { year: "2023", count: 1250 }
+      ]
     };
   },
-  name: 'AdminOverview',
-  components: {
-    OverviewPie,
+  methods: {
+    // 获取信息数据
+    async getData() {
+      try {
+        const response = await axios.get("/api/admin/getTotalData");
+        if (response.data.success) {
+          this.totalStudent = response.data.totalStudent;
+          this.boyCount = response.data.boyCount;
+          this.girlCount = response.data.girlCount;
+          this.reportedStudent = response.data.reportedStudent;
+          this.majorList = response.data.majorList;
+          this.enrollmentYearData = response.data.enrollmentYearData; // 添加这行
+        } else {
+          console.error("获取数据失败:", response.data.message);
+        }
+      } catch (error) {
+        console.error("请求数据错误:", error);
+      }
+    },
   },
-  methods:{
-    async getData(){
-      try{
-      const response=await axios.get('/api/admin/getTotalData');
-      if (response.data.success){
-        console.log("请求数据成功");
-        this.totalStudent=response.data.totalStudent;
-        this.boyCount=response.data.boyCount;
-        this.girlCount=response.data.girlCount;
-        this.reportedStudent=response.data.reportedStudent;
-      }
-      }catch(error){
-        console.error("请求数据错误",error);
-      }
-    }
-  }
-};
+  mounted() {
+    this.getData(); // 组件挂载时获取数据
+  },
+}
 </script>
 
 <style scoped>
-/* 外层容器 */
+/* 页面整体容器 */
 .admin-overview {
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 20px;
   background-color: #f9f9f9;
-  border-radius: 8px;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
-/* 上层布局 */
-.top-section {
+/* 行容器 */
+.row {
   display: flex;
+  justify-content: space-between;
   gap: 20px;
+  width: 100%;
+  height: calc(50% - 10px); /* 每行占50%高度，减去gap的一半 */
+  min-height: 0;
 }
 
-/* 信息总览框样式 */
-.info-box {
-  flex: 1;
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.info-box h2 {
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.info-box ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.info-box li {
-  margin-bottom: 10px;
-  color: #555;
-  font-size: 16px;
-}
-
-.info-box strong {
-  color: #000;
-}
-
-/* 预留位置框样式 */
-.placeholder-box {
+/* 模块样式 */
+.block {
   flex: 1;
   background: #ffffff;
   padding: 20px;
@@ -120,31 +137,45 @@ export default {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* 标题样式 */
+.block h2,
+.block h3 {
+  margin: 0 0 15px 0; /* 减小标题的margin */
+  color: #333;
+  text-align: center;
+  flex-shrink: 0; /* 防止标题被压缩 */
+}
+
+/* 图表容器样式 */
+.block > div {
+  flex: 1;
+  width: 100%;
+  overflow: hidden; /* 防止图表溢出 */
+}
+
+/* 信息列表的特殊样式 */
+.info-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
 }
 
-.placeholder-box h2 {
-  color: #333;
-  margin-bottom: 10px;
+.block li {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 8px;
 }
 
-.placeholder-box p {
-  color: #666;
-}
-
-/* 下层布局 */
-.bottom-section {
-  width: 100%; /* 占满整个页面宽度 */
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.bottom-section h2 {
-  margin-bottom: 15px;
-  color: #333;
-  text-align: center; /* 居中标题 */
+.block strong {
+  color: #000;
 }
 </style>
