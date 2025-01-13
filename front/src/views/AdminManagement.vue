@@ -6,7 +6,7 @@
       <button @click="searchStudent" class="search-button">搜索</button>
     </div>
 
-    <!-- 学生列表展示 -->
+
     <table class="student-table">
       <thead>
         <tr>

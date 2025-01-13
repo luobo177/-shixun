@@ -1,13 +1,13 @@
-package com.example.rear;
+package cn.cuit;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RearApplication {
-
+@MapperScan("cn.cuit.mapper")
+public class Student02App {
     public static void main(String[] args) {
-        SpringApplication.run(RearApplication.class, args);
+        SpringApplication.run(Student02App.class);
     }
-
 }

@@ -1,0 +1,16 @@
+server:
+  port: 8112
+
+spring:
+  datasource:
+    password: "041020"
+    username: root
+    driver-class-name: com.mysql.jdbc.Driver
+      #url: jdbc:mysql://localhost:3306/my_database?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/my_database
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: cn.cuit.domain
