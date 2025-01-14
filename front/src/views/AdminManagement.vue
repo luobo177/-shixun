@@ -134,9 +134,8 @@ export default {
     // 删除学生信息
     async deleteStudent(studentId) {
       try {
-        const response = await axios.post("/api/admin/deleteStudent", {
-          id: studentId,
-        });
+        const response = await axios.delete("/api/admin/deleteStudent"+studentId
+        );
         if (response.data.success) {
           this.OriginList = this.OriginList.filter(
             (student) => student.id !== studentId

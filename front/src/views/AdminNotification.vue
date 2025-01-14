@@ -4,8 +4,7 @@
         <h1>通知管理</h1>
         <button @click="AddButtonVisible">新建通知</button>
         <div v-if="isAddVisible">
-            <AddNotification :isVisible="isAddVisible" @update:isVisible="isAddVisible = $event"
-                @add="addNotification" />
+            <AddNotification :isVisible="isAddVisible" @update:isVisible="isAddVisible = $event" />
 
         </div>
         <div v-if="notification_list.length === 0" class="no-notification">
@@ -63,14 +62,16 @@ export default {
             try {
                 this.isLoading = true;
                 const response = await axios.delete(`/api/admin/deleteNotification?id=${notification.id}`);
-                console.log("删除成功", response.data);
-                this.notification_list = this.notification_list.filter(
-                    n => n.id !== notification.id
-                );
-                location.reload(true);
+                if (response.data.success) {
+                    console.log("删除成功", response.data.notifications);
+                    this.notification_list = this.notification_list.filter(
+                        n => n.id !== notification.id
+                    );
+                    location.reload(true);
+                }
             } catch (error) {
-                console.alter("删除失败");
-                console.log("删除失败",error);
+                alert("删除失败");
+                console.log("删除失败", error);
             } finally {
                 this.isLoading = false;
                 this.closeModal();
@@ -99,7 +100,7 @@ export default {
                     console.log("编辑成功", response.data);
                     this.isModelVisible = false;
                     location.reload(true);
-                }else{
+                } else {
                     console.error("编辑失败")
                 }
             } catch (error) {
