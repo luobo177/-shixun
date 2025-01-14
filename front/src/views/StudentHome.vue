@@ -54,10 +54,6 @@
           <th>身份证</th>
           <td>{{ student.idCard }}</td>
         </tr>
-        <tr>
-          <th>照片</th>
-          <td><img :src="student.photo" alt="学生照片" class="student-photo" /></td>
-        </tr>
       </tbody>
     </table>
   </div>
