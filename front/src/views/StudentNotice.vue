@@ -80,7 +80,7 @@ export default {
         async get_notification() {
             this.isLoading = true; // 开始加载
             try {
-                const response = await axios.get('/api/notification');
+                const response = await axios.get('/api/student/student-notice');
                 this.notification_list = response.data.notifications || [];
             } catch (error) {
                 console.error("获取通知失败：", error);
