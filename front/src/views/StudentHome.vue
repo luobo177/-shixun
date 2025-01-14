@@ -1,44 +1,85 @@
 <template>
-  <div>
-    <div class="student-container">
-      <!-- 学生照片 -->
-      <div class="photo-container">
-        <div class="photo-wrapper">
-          <img :src="student.photo" alt="学生照片" class="student-photo" />
-        </div>
+  <div class="student-home">
+    <!-- 学生照片 -->
+    <div class="photo-container">
+      <div class="photo-wrapper">
+        <img :src="student.photo" alt="学生照片" class="student-photo" />
       </div>
-
-      <!-- 信息表格 -->
-      <el-table :data="tableData" border style="width: 100%" class="info-table">
-        <el-table-column label="字段" width="120">
-          <template #default="scope">{{ scope.row.label }}</template>
-        </el-table-column>
-        <el-table-column label="内容" min-width="200">
-          <template #default="scope">{{ scope.row.value }}</template>
-        </el-table-column>
-      </el-table>
     </div>
+
+    <!-- 信息表格 -->
+    <table class="info-table">
+      <tbody>
+        <tr>
+          <th>姓名</th>
+          <td>{{ student.name }}</td>
+        </tr>
+        <tr>
+          <th>性别</th>
+          <td>{{ student.gender }}</td>
+        </tr>
+        <tr>
+          <th>出生日期</th>
+          <td>{{ student.birthDate }}</td>
+        </tr>
+        <tr>
+          <th>入学年份</th>
+          <td>{{ student.enrollmentYear }}</td>
+        </tr>
+        <tr>
+          <th>学号</th>
+          <td>{{ student.studentId }}</td>
+        </tr>
+        <tr>
+          <th>专业</th>
+          <td>{{ student.major }}</td>
+        </tr>
+        <tr>
+          <th>密码</th>
+          <td>{{ student.password }}</td>
+        </tr>
+        <tr>
+          <th>住校状态</th>
+          <td>{{ student.dormInfo }}</td>
+        </tr>
+        <tr>
+          <th>报到状态</th>
+          <td>{{ student.registrationStatus }}</td>
+        </tr>
+        <tr>
+          <th>电话号码</th>
+          <td>{{ student.phoneNumber }}</td>
+        </tr>
+        <tr>
+          <th>身份证</th>
+          <td>{{ student.idCard }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   name: "StudentHome",
   data() {
     return {
       student: {
-        photo: "", // 初始为空，稍后从数据库模拟填充
-        name: "",
-        gender: "",
-        birthDate: "",
-        phoneNumber: "",
-        studentId: "",
-        dormInfo: "",
-        registrationStatus: "",
+        photo: "https://via.placeholder.com/150", // 学生照片链接，初始为空
+        name: "许建航", // 姓名
+        gender: "男", // 性别
+        birthDate: "2024—06", // 出生日期
+        enrollmentYear: "2024", // 入学年份
+        studentId: "2022131032", // 学号
+        major: "计算机科学", // 专业
+        password: "password123", // 假设的密码
+        dormInfo: "已住校", // 住校状态
+        registrationStatus: "已报到", // 报到状态
+        phoneNumber: "18782896937", // 电话号码
+        idCard: "110101199001011234", // 身份证
       },
-      tableData: [] // 用于存储表格数据
     };
   },
   mounted() {
@@ -47,22 +88,14 @@ export default {
   methods: {
     async fetchStudentData() {
       try {
-        // 发起 GET 请求从后端获取学生数据
-        const response = await axios.get('/api/studentmessage');
-        this.student = response.data.student; // 假设返回的结构是 { student: {...} }
+        // 获取当前学生的ID，假设从 localStorage 获取
+        const studentId = localStorage.getItem('id');
+        const response = await axios.get(`/api/studentmessage?id=${studentId}`);
 
-        // 格式化数据填充到 tableData
-        this.tableData = [
-          { label: "姓名", value: "zhangsan" },
-          { label: "性别", value: this.student.gender },
-          { label: "出生日期", value: this.student.birthDate },
-          { label: "电话号码", value: this.student.phoneNumber },
-          { label: "学号", value: this.student.studentId },
-          { label: "住校情况", value: this.student.dormInfo },
-          { label: "注册信息", value: this.student.registrationStatus },
-        ];
+        // 假设返回的结构是 { student: {...} }
+        this.student = response.data.student;
       } catch (error) {
-        console.error('获取学生信息失败:', error);
+        console.error("获取学生信息失败:", error);
       }
     }
   }
@@ -70,13 +103,13 @@ export default {
 </script>
 
 <style scoped>
-.student-container {
+.student-home {
   max-width: 600px;
-  margin: 0 auto; /* 居中 */
-  background-color: #f9f9f9; /* 浅灰背景 */
+  margin: 0 auto;
+  background-color: #f9f9f9;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .photo-container {
@@ -86,7 +119,7 @@ export default {
 }
 
 .photo-wrapper {
-  border: 2px solid #000; /* 实线边框 */
+  border: 2px solid #000;
   padding: 5px;
   border-radius: 8px;
 }
@@ -95,24 +128,29 @@ export default {
   width: 150px;
   height: 150px;
   border-radius: 8px;
-  object-fit: cover; /* 确保图片不变形 */
+  object-fit: cover;
 }
 
 .info-table {
+  width: 100%;
+  border-collapse: collapse;
   margin-top: 20px;
-  border: 1px solid #ddd; /* 为表格添加边框 */
+  border: 1px solid #ddd;
 }
 
-.el-table th, .el-table td {
-  border: 1px solid #ddd; /* 为表格的每个单元格添加边框 */
+.info-table th, .info-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+  vertical-align: top;
 }
 
-.el-table th {
-  background-color: #f0f0f0; /* 设置表头背景色 */
+.info-table th {
+  background-color: #f0f0f0;
+  width: 150px; /* 设置表头宽度 */
 }
 
-.el-table .cell {
-  padding: 10px; /* 增加单元格的内边距 */
-  text-align: center; /* 居中对齐内容 */
+.info-table td {
+  width: 200px; /* 设置单元格宽度 */
 }
 </style>

@@ -62,11 +62,16 @@
             this.isSuccess = true;
             this.isError = false;
             this.resetForm();
+            this.closeModal();
+          }else{
+            this.isSuccess = false;
+            this.isError = true;
+            console.error("添加通知失败");
           }
         } catch (error) {
           this.isError = true;
           this.isSuccess = false;
-          console.error('添加通知失败', error);
+          console.error('连接失败', error);
         }
       },
       resetForm() {

@@ -5,11 +5,11 @@
   
       <!-- 注册页面 -->
       <div v-else>
-        <h1 class="title">学生注册</h1>
+        <h1 class="title">学生签到</h1>
   
         <!-- 注册成功提示 -->
         <div v-if="isRegistered" class="registration-success">
-          <p>注册成功！</p>
+          <p>签到成功！</p>
         </div>
   
         <!-- 身份证输入表单 -->
@@ -25,7 +25,7 @@
             />
           </div>
   
-          <button @click="register" class="btn btn-register">注册</button>
+          <button @click="register" class="btn btn-register">签到</button>
         </div>
   
         <!-- 未查询到身份证号的提示框 -->
