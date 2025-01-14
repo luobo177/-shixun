@@ -61,14 +61,6 @@
         <el-input type="password" v-model="student.password"></el-input>
       </el-form-item>
 
-      <!-- 住校信息 -->
-      <el-form-item label="住校情况">
-        <el-select v-model="student.dormInfo" placeholder="请选择住校情况">
-          <el-option label="住校" value="住校"></el-option>
-          <el-option label="走读" value="走读"></el-option>
-        </el-select>
-      </el-form-item>
-
       <!-- 注册信息 -->
       <el-form-item label="注册信息">
         <el-select v-model="student.registrationStatus" placeholder="请选择注册状态">
@@ -117,7 +109,6 @@ export default {
         studentId: '',
         major: '',
         password: '',
-        dormInfo: '',
         registrationStatus: '',
         phoneNumber: '',
         idCard: '',

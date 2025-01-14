@@ -39,10 +39,6 @@
           <td>{{ student.password }}</td>
         </tr>
         <tr>
-          <th>住校状态</th>
-          <td>{{ student.dormInfo }}</td>
-        </tr>
-        <tr>
           <th>报到状态</th>
           <td>{{ student.registrationStatus }}</td>
         </tr>
@@ -75,7 +71,6 @@ export default {
         studentId: "2022131032", // 学号
         major: "计算机科学", // 专业
         password: "password123", // 假设的密码
-        dormInfo: "已住校", // 住校状态
         registrationStatus: "已报到", // 报到状态
         phoneNumber: "18782896937", // 电话号码
         idCard: "110101199001011234", // 身份证
