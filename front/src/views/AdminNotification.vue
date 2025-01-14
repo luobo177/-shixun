@@ -4,7 +4,8 @@
         <h1>通知管理</h1>
         <button @click="AddButtonVisible">新建通知</button>
         <div v-if="isAddVisible">
-            <AddNotification :isVisible="isAddVisible" @update:isVisible="isAddVisible = $event" @add="addNotification" />
+            <AddNotification :isVisible="isAddVisible" @update:isVisible="isAddVisible = $event"
+                @add="addNotification" />
 
         </div>
         <div v-if="notification_list.length === 0" class="no-notification">
@@ -66,8 +67,10 @@ export default {
                 this.notification_list = this.notification_list.filter(
                     n => n.id !== notification.id
                 );
+                location.reload(true);
             } catch (error) {
-                console.error("删除失败", error);
+                console.alter("删除失败");
+                console.log("删除失败",error);
             } finally {
                 this.isLoading = false;
                 this.closeModal();
@@ -77,10 +80,10 @@ export default {
             this.isLoading = true; // 开始加载
             try {
                 const response = await axios.get('/api/admin/notification');
-                if(response.data.success){
+                if (response.data.success) {
                     console.log("获取通知成功", response.data);
                     this.notification_list = response.data.notifications || [];
-                }else{
+                } else {
                     console.log("获取通知失败：", response.data.message);
                 }
             } catch (error) {
@@ -92,11 +95,15 @@ export default {
         async editNotification(notification) {
             try {
                 const response = await axios.post(`/api/admin/editNotification`, notification);
-                console.log("编辑成功", response.data);
-                this.isModelVisible = false;
-                this.get_notification(); // 编辑后重新获取数据
+                if (response.data.success) {
+                    console.log("编辑成功", response.data);
+                    this.isModelVisible = false;
+                    location.reload(true);
+                }else{
+                    console.error("编辑失败")
+                }
             } catch (error) {
-                console.error("编辑失败", error);
+                console.error("连接失败", error);
             }
         },
         hoverNotification(index) {
