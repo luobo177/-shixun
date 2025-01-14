@@ -57,7 +57,7 @@
                     console.log('登录响应:', response.data);
 
                     const data = response.data;
-                    const id = "some-unique-id"
+                    const id = data.student_id;
                     if (data.success) {
                         localStorage.setItem('token', data.token);
                         localStorage.setItem('role',role);

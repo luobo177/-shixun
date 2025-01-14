@@ -132,7 +132,7 @@ export default {
     async getStudentData() {
       try {
         const studentId = localStorage.getItem('id');
-        const response = await axios.get(`http://your-api-endpoint.com/student/${studentId}`);
+        const response = await axios.get(`/api/student-change?id=${studentId}`);
         this.student = response.data; // 将数据绑定到表单模型
       } catch (error) {
         console.error('获取学生数据失败:', error);
@@ -149,7 +149,7 @@ export default {
     async submitForm() {
       try {
         const studentId = this.student.studentId; // 获取当前学生ID
-        const response = await axios.put(`http://your-api-endpoint.com/student/${studentId}`, this.student); // 更新学生信息
+        const response = await axios.put(`/api/student-change?id=${studentId}`, this.student); // 更新学生信息
         console.log('学生信息更新成功:', response.data);
       } catch (error) {
         console.error('提交失败:', error);
