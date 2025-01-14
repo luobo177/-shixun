@@ -39,14 +39,25 @@
                     return;
                 }
                 try {
+                    console.log('发送登录请求:', {
+                        url: '/api/admin/login',
+                        data: {
+                            account: this.account,
+                            password: this.password,
+                            type: role,
+                        }
+                    });
+
                     const response = await axios.post('/api/admin/login', {
                         account: this.account,
                         password: this.password,
                         type: role,
-                    })
+                    });
+
+                    console.log('登录响应:', response.data);
 
                     const data = response.data;
-                    const id = "some-unique-id"
+                    const id = data.student_id;
                     if (data.success) {
                         localStorage.setItem('token', data.token);
                         localStorage.setItem('role',role);
@@ -62,8 +73,11 @@
                     }
 
                 } catch (error) {
+                    console.error('登录错误详情:', error);
                     this.errorMessage = '未连接上服务器';
-                    console.error('登录失败', error);
+                    if (error.response) {
+                        console.log('错误响应:', error.response.data);
+                    }
                 }
             },
         }

@@ -39,10 +39,6 @@
           <td>{{ student.password }}</td>
         </tr>
         <tr>
-          <th>住校状态</th>
-          <td>{{ student.dormInfo }}</td>
-        </tr>
-        <tr>
           <th>报到状态</th>
           <td>{{ student.registrationStatus }}</td>
         </tr>
@@ -75,7 +71,6 @@ export default {
         studentId: "2022131032", // 学号
         major: "计算机科学", // 专业
         password: "password123", // 假设的密码
-        dormInfo: "已住校", // 住校状态
         registrationStatus: "已报到", // 报到状态
         phoneNumber: "18782896937", // 电话号码
         idCard: "110101199001011234", // 身份证
@@ -88,9 +83,8 @@ export default {
   methods: {
     async fetchStudentData() {
       try {
-        // 获取当前学生的ID，假设从 localStorage 获取
         const studentId = localStorage.getItem('id');
-        const response = await axios.get(`/api/studentmessage?id=${studentId}`);
+        const response = await axios.get(`/api/student/home?id=${studentId}`);
 
         // 假设返回的结构是 { student: {...} }
         this.student = response.data.student;

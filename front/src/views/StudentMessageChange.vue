@@ -61,14 +61,6 @@
         <el-input type="password" v-model="student.password"></el-input>
       </el-form-item>
 
-      <!-- 住校信息 -->
-      <el-form-item label="住校情况">
-        <el-select v-model="student.dormInfo" placeholder="请选择住校情况">
-          <el-option label="住校" value="住校"></el-option>
-          <el-option label="走读" value="走读"></el-option>
-        </el-select>
-      </el-form-item>
-
       <!-- 注册信息 -->
       <el-form-item label="注册信息">
         <el-select v-model="student.registrationStatus" placeholder="请选择注册状态">
@@ -117,7 +109,6 @@ export default {
         studentId: '',
         major: '',
         password: '',
-        dormInfo: '',
         registrationStatus: '',
         phoneNumber: '',
         idCard: '',
@@ -132,7 +123,7 @@ export default {
     async getStudentData() {
       try {
         const studentId = localStorage.getItem('id');
-        const response = await axios.get(`http://your-api-endpoint.com/student/${studentId}`);
+        const response = await axios.get(`/api/student/change?id=${studentId}`);
         this.student = response.data; // 将数据绑定到表单模型
       } catch (error) {
         console.error('获取学生数据失败:', error);
@@ -148,8 +139,8 @@ export default {
     // 提交表单
     async submitForm() {
       try {
-        const studentId = this.student.studentId; // 获取当前学生ID
-        const response = await axios.put(`http://your-api-endpoint.com/student/${studentId}`, this.student); // 更新学生信息
+        const studentId = this.student.studentId;
+        const response = await axios.put(`/api/student/update/${studentId}`, this.student);
         console.log('学生信息更新成功:', response.data);
       } catch (error) {
         console.error('提交失败:', error);

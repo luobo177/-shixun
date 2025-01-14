@@ -66,7 +66,7 @@
         this.isLoading = true; // 显示加载状态
         try {
           // 向后台请求验证身份证号
-          const response = await axios.post('/api/checkIdCard', { idCard: this.idCard });
+          const response = await axios.post('/api/student/student-registe', { idCard: this.idCard });
   
           if (response.data.exists) {
             this.isRegistered = true; // 如果存在，注册成功
