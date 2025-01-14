@@ -88,7 +88,6 @@ export default {
   methods: {
     async fetchStudentData() {
       try {
-        // 获取当前学生的ID，假设从 localStorage 获取
         const studentId = localStorage.getItem('id');
         const response = await axios.get(`/api/student/home?id=${studentId}`);
 
