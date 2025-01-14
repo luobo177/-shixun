@@ -64,6 +64,7 @@
             this.resetForm();
             this.closeModal();
             console.alert("增加成功");
+            location.reload(true);
           }else{
             this.isSuccess = false;
             this.isError = true;
