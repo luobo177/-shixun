@@ -12,8 +12,7 @@ const app=createApp(App);
 app.use(ElementPlus);
 app.use(router);
 app.config.globalProperties.$axios = axios;
-axios.defaults.baseURL = ''  // 使用相对路径，让代理处理
-axios.defaults.withCredentials = true  // 允许跨域携带凭证
+axios.defaults.baseURL = 'http://192.168.43.227:8112';
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component);
 }

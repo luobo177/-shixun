@@ -63,15 +63,21 @@
             this.isError = false;
             this.resetForm();
             this.closeModal();
+            alert("增加成功");
+            location.reload(true);
           }else{
             this.isSuccess = false;
             this.isError = true;
+            alert("添加通知失败");
             console.error("添加通知失败");
           }
         } catch (error) {
           this.isError = true;
           this.isSuccess = false;
+          alert("连接失败");
           console.error('连接失败', error);
+        }finally{
+          this.$emit('update:isVisible',false)
         }
       },
       resetForm() {
