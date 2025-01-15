@@ -1,96 +1,105 @@
 <template>
-    <div class="gender-chart">
-      <canvas ref="chart"></canvas>
-    </div>
-  </template>
-  
-  <script>
-  import { Chart, registerables } from "chart.js";
-  
-  Chart.register(...registerables);
-  
-  export default {
-    name: "OverviewGender",
-    props: {
-      boyCount: {
-        type: Number,
-        required: true,
-      },
-      girlCount: {
-        type: Number,
-        required: true,
-      },
+  <div class="chart-container">
+    <canvas ref="genderChart"></canvas>
+  </div>
+</template>
+
+<script>
+import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
+
+// 注册必要的组件
+Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
+
+export default {
+  name: 'OverviewGender',
+  props: {
+    boyCount: {
+      type: Number,
+      required: true
     },
-    data() {
-      return {
-        chartInstance: null,
-      };
-    },
-    mounted() {
-      this.initChart();
-    },
-    watch: {
-      boyCount: "updateChart",
-      girlCount: "updateChart",
-    },
-    methods: {
-      initChart() {
-        const ctx = this.$refs.chart.getContext("2d");
-  
-        // 准备数据
-        const data = [this.boyCount, this.girlCount];
-  
-        // 创建图表实例
-        this.chartInstance = new Chart(ctx, {
-          type: "doughnut",
-          data: {
-            labels: ["男生", "女生"],
-            datasets: [
-              {
-                label: "性别分布",
-                data: data,
-                backgroundColor: ["#36A2EB", "#FF6384"], // 配置环形图颜色
-                hoverOffset: 10, // 鼠标悬停偏移量
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-              legend: {
-                position: "top",
-              },
-              tooltip: {
-                enabled: true,
-              },
+    girlCount: {
+      type: Number,
+      required: true
+    }
+  },
+  data() {
+    return {
+      chart: null
+    };
+  },
+  methods: {
+    initChart() {
+      const ctx = this.$refs.genderChart.getContext('2d');
+      
+      // 销毁旧的图表实例
+      if (this.chart) {
+        this.chart.destroy();
+      }
+
+      this.chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['男生', '女生'],
+          datasets: [{
+            data: [this.boyCount, this.girlCount],
+            backgroundColor: ['#36A2EB', '#FF6384'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
             },
-          },
-        });
-      },
-      updateChart() {
-        if (this.chartInstance) {
-          // 更新数据
-          this.chartInstance.data.datasets[0].data = [this.boyCount, this.girlCount];
-          this.chartInstance.update(); // 刷新图表
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = context.raw || 0;
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = Math.round((value / total) * 100);
+                  return `${label}: ${value}人 (${percentage}%)`;
+                }
+              }
+            }
+          }
         }
-      },
+      });
     },
-  };
-  </script>
+    updateChart() {
+      if (this.chart) {
+        this.chart.data.datasets[0].data = [this.boyCount, this.girlCount];
+        this.chart.update();
+      }
+    }
+  },
+  mounted() {
+    this.initChart();
+  },
+  watch: {
+    boyCount() {
+      this.updateChart();
+    },
+    girlCount() {
+      this.updateChart();
+    }
+  },
+  beforeUnmount() {
+    // 组件销毁前清理图表实例
+    if (this.chart) {
+      this.chart.destroy();
+      this.chart = null;
+    }
+  }
+};
+</script>
 
 <style scoped>
-.gender-chart {
-  text-align: center;
+.chart-container {
+  width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-canvas {
-  max-width: 100%;
-  max-height: 100%;
+  position: relative;
 }
 </style>

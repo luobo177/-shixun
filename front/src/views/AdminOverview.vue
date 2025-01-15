@@ -58,25 +58,13 @@ export default {
   },
   data() {
     return {
-      totalStudent: 1250, // 新生总人数
-      boyCount: 680, // 男生人数
-      girlCount: 570, // 女生人数
-      reportedStudent: 980, // 报道人数
-      majorList: [
-        { major: "计算机科学", count: 220 },
-        { major: "软件工程", count: 180 },
-        { major: "人工智能", count: 150 },
-        { major: "数据科学", count: 160 },
-        { major: "网络工程", count: 140 },
-        { major: "信息安全", count: 130 }
-      ],
-      enrollmentYearData: [
-        { year: "2019", count: 1100 },
-        { year: "2020", count: 1150 },
-        { year: "2021", count: 1200 },
-        { year: "2022", count: 1180 },
-        { year: "2023", count: 1250 }
-      ]
+      totalStudent: null, // 或者 0
+      boyCount: 0,
+      girlCount: 0,
+      reportedStudent: 0,
+      majorList: [],
+      enrollmentYearData: []
+
     };
   },
   methods: {
@@ -84,18 +72,26 @@ export default {
     async getData() {
       try {
         const response = await axios.get("/api/admin/getTotalData");
-        if (response.data.success) {
-          this.totalStudent = response.data.totalStudent;
-          this.boyCount = response.data.boyCount;
-          this.girlCount = response.data.girlCount;
-          this.reportedStudent = response.data.reportedStudent;
-          this.majorList = response.data.majorList;
-          this.enrollmentYearData = response.data.enrollmentYearData; // 添加这行
+        if (response.data.success && response.data.totalStudent !== undefined) {
+          this.totalStudent = response.data.totalStudent || 0;
+          this.boyCount = response.data.boyCount || 0;
+          this.girlCount = response.data.girlCount || 0;
+          this.reportedStudent = response.data.reportedStudent || 0;
+
+          this.majorList = (response.data.majorList || []).map(item => ({
+            name: item.major,
+            value: item.count
+          }));
+
+          this.enrollmentYearData = (response.data.enrollmentYearData || []).map(item => ({
+            name: item.year,
+            value: item.count
+          }));
         } else {
-          console.error("获取数据失败:", response.data.message);
+          console.error("获取数据失败1:", response.data?.message || "未知错误");
         }
       } catch (error) {
-        console.error("请求数据错误:", error);
+        console.error("获取数据失败2:", error);
       }
     },
   },
@@ -124,7 +120,8 @@ export default {
   justify-content: space-between;
   gap: 20px;
   width: 100%;
-  height: calc(50% - 10px); /* 每行占50%高度，减去gap的一半 */
+  height: calc(50% - 10px);
+  /* 每行占50%高度，减去gap的一半 */
   min-height: 0;
 }
 
@@ -145,17 +142,20 @@ export default {
 /* 标题样式 */
 .block h2,
 .block h3 {
-  margin: 0 0 15px 0; /* 减小标题的margin */
+  margin: 0 0 15px 0;
+  /* 减小标题的margin */
   color: #333;
   text-align: center;
-  flex-shrink: 0; /* 防止标题被压缩 */
+  flex-shrink: 0;
+  /* 防止标题被压缩 */
 }
 
 /* 图表容器样式 */
-.block > div {
+.block>div {
   flex: 1;
   width: 100%;
-  overflow: hidden; /* 防止图表溢出 */
+  overflow: hidden;
+  /* 防止图表溢出 */
 }
 
 /* 信息列表的特殊样式 */
