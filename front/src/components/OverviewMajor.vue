@@ -44,17 +44,23 @@ export default {
   methods: {
     initChart() {
       const canvas = this.$refs.chart;
-      if (!canvas) return;
-
+      if (!canvas) {
+        console.error("专业统计图表Canvas 元素未找到，无法初始化图表");
+        return;
+      }
+      console.log("专业统计图表Canvas 元素已找到");
       const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-
+      if (!ctx) {
+        console.error("专业统计图表Canvas 上下文未找到，无法初始化图表");
+        return;
+      }
+      
       if (this.chartInstance) {
         this.chartInstance.destroy();
       }
 
       const majors = this.data.map((item) => item.major);
-      const counts = this.data.map((item) => item.count);
+      const counts = this.data.map((item) => item.count); 
 
       this.chartInstance = new Chart(ctx, {
         type: "bar",

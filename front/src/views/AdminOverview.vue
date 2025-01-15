@@ -3,7 +3,7 @@
     <!-- 上排三块 -->
     <div class="row">
       <!-- 信息总览模块 -->
-      <div class="block">
+      <div class="block" v-if="chartReady">
         <h2>信息总览</h2>
         <ul class="info-list">
           <li>新生总人数: <strong>{{ totalStudent }}</strong></li>
@@ -14,12 +14,12 @@
         </ul>
       </div>
       <!-- 模块 2 -->
-      <div class="block">
+      <div class="block" v-if="chartReady">
         <h3>按入学年份统计</h3>
         <OverviewEnrollmentYear :data="enrollmentYearData" />
       </div>
       <!-- 模块 3 -->
-      <div class="block">
+      <div class="block" v-if="chartReady">
         <h3>性别分布</h3>
         <OverviewGender :boyCount="boyCount" :girlCount="girlCount" />
       </div>
@@ -28,12 +28,12 @@
     <!-- 下排两块 -->
     <div class="row">
       <!-- 模块 4 -->
-      <div class="block">
+      <div class="block" v-if="chartReady">
         <h3>按专业统计</h3>
         <OverviewMajor :data="majorList" />
       </div>
       <!-- 模块 5 -->
-      <div class="block">
+      <div class="block" v-if="chartReady">
         <h3>报道情况</h3>
         <OverViewRegister :totalStudent="totalStudent" :reportedStudent="reportedStudent" />
       </div>
@@ -58,12 +58,13 @@ export default {
   },
   data() {
     return {
-      totalStudent: null, // 或者 0
-      boyCount: 0,
-      girlCount: 0,
-      reportedStudent: 0,
-      majorList: [],
-      enrollmentYearData: []
+      chartReady: false,
+      totalStudent: 1500, // 或者 0
+      boyCount: 1000,
+      girlCount: 500,
+      reportedStudent: 1000,
+      majorList: [{ major: '计算机科学与技术', count: 100 }, { major: '软件工程', count: 200 }, { major: '网络工程', count: 300 }],
+      enrollmentYearData: [{ year: '2020', count: 150 }, { year: '2021', count: 180 }, { year: '2022', count: 200 }, { year: '2023', count: 220 }]
 
     };
   },
@@ -72,32 +73,73 @@ export default {
     async getData() {
       try {
         const response = await axios.get("/api/admin/getTotalData");
-        if (response.data.success && response.data.totalStudent !== undefined) {
-          this.totalStudent = response.data.totalStudent || 0;
-          this.boyCount = response.data.boyCount || 0;
-          this.girlCount = response.data.girlCount || 0;
-          this.reportedStudent = response.data.reportedStudent || 0;
+        console.log(response.data);
+        if (response.data.success) {
+          const { totalStudent, boyCount, girlCount, reportedStudent, majorList, enrollmentYearData } = response.data;
+          console.log(totalStudent, boyCount, girlCount, reportedStudent, majorList, enrollmentYearData);
 
-          this.majorList = (response.data.majorList || []).map(item => ({
-            name: item.major,
-            value: item.count
-          }));
+          // 验证每个字段是否存在
+          this.totalStudent = totalStudent || 0;
+          this.boyCount = boyCount || 0;
+          this.girlCount = girlCount || 0;
+          this.reportedStudent = reportedStudent || 0;
 
-          this.enrollmentYearData = (response.data.enrollmentYearData || []).map(item => ({
-            name: item.year,
-            value: item.count
-          }));
+          this.majorList = Array.isArray(majorList)
+            ? majorList.map(item => ({ major: item.major, count: item.count }))
+            : [];
+
+          this.enrollmentYearData = Array.isArray(enrollmentYearData)
+            ? enrollmentYearData.map(item => ({ year: item.year, count: item.count }))
+            : [];
+          this.chartReady = true;
         } else {
-          console.error("获取数据失败1:", response.data?.message || "未知错误");
+          console.error("获取数据失败: 数据格式不符合预期", response.data);
         }
+
       } catch (error) {
         console.error("获取数据失败2:", error);
       }
     },
   },
   mounted() {
-    this.getData(); // 组件挂载时获取数据
+    setTimeout(() => {
+      const mockResponse = {
+        success: true,
+        data: {
+          totalStudent: 500,
+          boyCount: 300,
+          girlCount: 200,
+          reportedStudent: 450,
+          majorList: [
+            { major: "计算机科学", count: 150 },
+            { major: "电子工程", count: 100 },
+            { major: "机械工程", count: 200 },
+            { major: "数学", count: 50 },
+          ],
+          enrollmentYearData: [
+            { year: "2020", count: 120 },
+            { year: "2021", count: 130 },
+            { year: "2022", count: 140 },
+            { year: "2023", count: 110 },
+          ],
+        },
+      };
+
+      if (mockResponse.success) {
+        const { totalStudent, boyCount, girlCount, reportedStudent, majorList, enrollmentYearData } = mockResponse.data;
+
+        this.totalStudent = totalStudent;
+        this.boyCount = boyCount;
+        this.girlCount = girlCount;
+        this.reportedStudent = reportedStudent;
+        this.majorList = majorList.map(item => ({ major: item.major, count: item.count }));
+        this.enrollmentYearData = enrollmentYearData.map(item => ({ year: item.year, count: item.count }));
+        this.chartReady = true; 
+      }
+    }, 1000); // 模拟 1 秒延迟
+    
   },
+
 }
 </script>
 

@@ -1,105 +1,111 @@
 <template>
-  <div class="chart-container">
-    <canvas ref="genderChart"></canvas>
+  <div class="gender-chart">
+    <canvas ref="chart"></canvas>
   </div>
 </template>
 
 <script>
-import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart, registerables } from "chart.js";
 
-// 注册必要的组件
-Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
+Chart.register(...registerables);
 
 export default {
-  name: 'OverviewGender',
+  name: "OverviewGender",
   props: {
     boyCount: {
       type: Number,
-      required: true
+      required: true,
     },
     girlCount: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      chart: null
+      chartInstance: null,
     };
+  },
+  mounted() {
+    this.initChart();
+  },
+  watch: {
+    boyCount: "updateChart",
+    girlCount: "updateChart",
   },
   methods: {
     initChart() {
-      const ctx = this.$refs.genderChart.getContext('2d');
-      
-      // 销毁旧的图表实例
+      const canvas = this.$refs.chart;
+
+      // 检查 canvas 是否存在
+      if (!canvas) {
+        console.error("性别表Canvas 元素未找到，无法初始化图表");
+        return;
+      }
+
+      const ctx = canvas.getContext("2d");
+
       if (this.chart) {
         this.chart.destroy();
       }
 
       this.chart = new Chart(ctx, {
-        type: 'doughnut',
+        type: "doughnut",
         data: {
-          labels: ['男生', '女生'],
-          datasets: [{
-            data: [this.boyCount, this.girlCount],
-            backgroundColor: ['#36A2EB', '#FF6384'],
-            borderWidth: 0
-          }]
+          labels: ["男生", "女生"],
+          datasets: [
+            {
+              data: [this.boyCount, this.girlCount],
+              backgroundColor: ["#36A2EB", "#FF6384"],
+              borderWidth: 0,
+            },
+          ],
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              position: 'bottom'
+              position: "bottom",
             },
             tooltip: {
               callbacks: {
-                label: function(context) {
-                  const label = context.label || '';
+                label: function (context) {
+                  const label = context.label || "";
                   const value = context.raw || 0;
                   const total = context.dataset.data.reduce((a, b) => a + b, 0);
                   const percentage = Math.round((value / total) * 100);
                   return `${label}: ${value}人 (${percentage}%)`;
-                }
-              }
-            }
-          }
-        }
+                },
+              },
+            },
+          },
+        },
       });
     },
-    updateChart() {
-      if (this.chart) {
-        this.chart.data.datasets[0].data = [this.boyCount, this.girlCount];
-        this.chart.update();
-      }
+  },
+  updateChart() {
+    if (this.chartInstance) {
+      // 更新数据
+      this.chartInstance.data.datasets[0].data = [this.boyCount, this.girlCount];
+      this.chartInstance.update(); // 刷新图表
     }
   },
-  mounted() {
-    this.initChart();
-  },
-  watch: {
-    boyCount() {
-      this.updateChart();
-    },
-    girlCount() {
-      this.updateChart();
-    }
-  },
-  beforeUnmount() {
-    // 组件销毁前清理图表实例
-    if (this.chart) {
-      this.chart.destroy();
-      this.chart = null;
-    }
-  }
 };
 </script>
 
 <style scoped>
-.chart-container {
-  width: 100%;
+.gender-chart {
+  text-align: center;
   height: 100%;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+canvas {
+  max-width: 100%;
+  max-height: 100%;
 }
 </style>

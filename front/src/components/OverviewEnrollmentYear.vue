@@ -15,12 +15,7 @@ export default {
     data: {
       type: Array,
       required: true,
-      default: () => [
-        { year: "2020", count: 150 },
-        { year: "2021", count: 180 },
-        { year: "2022", count: 200 },
-        { year: "2023", count: 220 }
-      ]
+      default:()=>[]
     }
   },
   data() {
