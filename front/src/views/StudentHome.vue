@@ -3,7 +3,7 @@
     <!-- 学生照片 -->
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img :src="student.photo" alt="学生照片" class="student-photo" />
+        <img :src="getPhotoPath(student.photo)" alt="学生照片" class="student-photo" />
       </div>
     </div>
 
@@ -19,8 +19,8 @@
           <td>{{ student.gender }}</td>
         </tr>
         <tr>
-          <th>出生日期</th>
-          <td>{{ student.birthDate }}</td>
+          <th>年龄</th>
+          <td>{{ student.age }}</td>
         </tr>
         <tr>
           <th>入学年份</th>
@@ -63,10 +63,10 @@ export default {
   data() {
     return {
       student: {
-        photo: "https://via.placeholder.com/150", // 学生照片链接，初始为空
+        photo: "student1.jpg", // 初始为默认图片名
         name: "许建航", // 姓名
         gender: "男", // 性别
-        birthDate: "2024—06", // 出生日期
+        age: "2024—06", // 出生日期
         enrollmentYear: "2024", // 入学年份
         studentId: "2022131032", // 学号
         major: "计算机科学", // 专业
@@ -83,7 +83,7 @@ export default {
   methods: {
     async fetchStudentData() {
       try {
-        const studentId = localStorage.getItem('id');
+        const studentId = localStorage.getItem("id");
         const response = await axios.get(`/api/student/home?id=${studentId}`);
 
         // 假设返回的结构是 { student: {...} }
@@ -91,8 +91,12 @@ export default {
       } catch (error) {
         console.error("获取学生信息失败:", error);
       }
-    }
-  }
+    },
+    getPhotoPath(photo) {
+      // 拼接 public 文件夹中图片的访问路径
+      return `/images/${photo}`;
+    },
+  },
 };
 </script>
 
@@ -132,7 +136,8 @@ export default {
   border: 1px solid #ddd;
 }
 
-.info-table th, .info-table td {
+.info-table th,
+.info-table td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: left;

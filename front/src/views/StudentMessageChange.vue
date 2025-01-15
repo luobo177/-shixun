@@ -31,9 +31,9 @@
         </el-select>
       </el-form-item>
 
-      <!-- 出生日期 -->
-      <el-form-item label="出生日期">
-        <el-date-picker v-model="student.birthDate" type="date" placeholder="选择出生日期"></el-date-picker>
+      <!-- 电话号码 -->
+      <el-form-item label="年龄">
+        <el-input v-model="student.age"></el-input>
       </el-form-item>
 
       <!-- 入学年份 -->
@@ -84,7 +84,7 @@
 
 <script>
 import axios from 'axios';
-import { ElUpload, ElButton, ElSelect, ElOption, ElDatePicker, ElInput, ElForm, ElFormItem } from 'element-plus';
+import { ElUpload, ElButton, ElSelect, ElOption, ElInput, ElForm, ElFormItem } from 'element-plus';
 
 export default {
   name: 'StudentMessageChange',
@@ -95,7 +95,6 @@ export default {
     ElButton,
     ElSelect,
     ElOption,
-    ElDatePicker,
     ElUpload
   },
   data() {
@@ -104,7 +103,7 @@ export default {
         photo: 'https://via.placeholder.com/150', // 默认照片
         name: '',
         gender: '',
-        birthDate: '',
+        age: '',
         enrollmentYear: '',
         studentId: '',
         major: '',

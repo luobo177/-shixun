@@ -23,7 +23,7 @@
               <i class="el-icon-user"></i> 学生通知
             </el-menu-item>
             <el-menu-item index="student-registe">
-              <i class="el-icon-user"></i> 注册确认
+              <i class="el-icon-user"></i> 签到
             </el-menu-item>
           </el-menu>
         </el-aside>
